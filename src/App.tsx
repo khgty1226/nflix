@@ -32,14 +32,6 @@ const Box = styled(motion.div)`
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
-const Circle = styled(motion.div)`
-    background-color: #00a5ff;
-    height: 100px;
-    width: 100px;
-
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
-`;
-
 const Overlay = styled(motion.div)`
   width: 100%;
   height: 100%;
@@ -56,20 +48,24 @@ const overlay = {
 };
 
 function App() {
-    const [clicked, setClicked] = useState(false);
-    const click = () => setClicked((prev) => !prev);
+    const [id, setId] = useState<null | string>(null);
     return (
-        <Wrapper onClick={click}>
+        <Wrapper>
             <Grid>
-                <Box layoutId="box"></Box>
-                <Box></Box>
-                <Box></Box>
-                <Box></Box>
+                {["1", "2", "3", "4"].map((n) => (
+                    <Box onClick={() => setId(n)} key={n} layoutId={n} />
+                ))}
             </Grid>
             <AnimatePresence>
-                {clicked ? (
-                    <Overlay variants={overlay} initial="hidden" animate="visible" exit="exit">
-                        <Box layoutId="box" style={{width:400, height:400}}></Box>
+                {id ? (
+                    <Overlay
+                        variants={overlay}
+                        onClick={() => setId(null)}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                    >
+                        <Box layoutId={id} style={{ width: 400, height: 200 }} />
                     </Overlay>
                 ) : null}
             </AnimatePresence>
