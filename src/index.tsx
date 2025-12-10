@@ -61,8 +61,8 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     font-family: "Source Sans 3", sans-serif;;
-      color: white;
-      background:linear-gradient(135deg,#e09,#d0e);
+      color: black;
+      background: white;
   }
   a {
     text-decoration: none;
