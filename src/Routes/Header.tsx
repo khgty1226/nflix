@@ -64,7 +64,7 @@ const Circle = styled(motion.span)`
     width: 5px;
     height: 5px;
     border-radius: 5px;
-    bottom: -5px;
+    bottom: -10px;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -162,7 +162,7 @@ function Header() {
                 <Search>
                     <motion.svg
                         onClick={toggleSearch}
-                        animate={{ x: searchOpen ? -185 : 0 }}
+                        animate={{ x: searchOpen ? -210 : 0 }}
                         transition={{ ease: "linear" }}
                         fill="currentColor"
                         viewBox="0 0 20 20"

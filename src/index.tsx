@@ -62,8 +62,8 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     font-family: "Source Sans 3", sans-serif;;
-      color: black;
-      background: white;
+      color: ${props => props.theme.white.darker};
+      background: black;
   }
   a {
     text-decoration: none;
