@@ -1,6 +1,6 @@
 import {Link, useHistory, useRouteMatch} from "react-router-dom";
 import styled from "styled-components";
-import { motion, useAnimation, useViewportScroll } from "framer-motion";
+import {motion, useAnimation, useScroll} from "framer-motion";
 import { useEffect, useState } from "react";
 import {useForm} from "react-hook-form";
 
@@ -106,7 +106,7 @@ function Header() {
     const history = useHistory();
     const inputAnimation = useAnimation();
     const navAnimation = useAnimation();
-    const { scrollY } = useViewportScroll();
+    const { scrollY } = useScroll();
     const toggleSearch = () => {
         if (searchOpen) {
             inputAnimation.start({
@@ -118,7 +118,7 @@ function Header() {
         setSearchOpen((prev) => !prev);
     };
     useEffect(() => {
-        scrollY.onChange(() => {
+        scrollY.on("change", () => {
             if (scrollY.get() > 80) {
                 navAnimation.start("scroll");
             } else {
