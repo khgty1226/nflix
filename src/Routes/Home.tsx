@@ -57,7 +57,6 @@ const Box = styled(motion.div)<{bgPhoto:string}>`
     background-size: cover;
     background-position: center;
     height: 200px;
-    color: red;
     &:first-child {
         transform-origin: center left;
     }
@@ -85,6 +84,29 @@ const boxVariants: Variants = {
     hover: {
         scale: 1.3,
         y: -50,
+        transition: {
+            type: "tween",
+            delay: 0.3
+        },
+    }
+}
+
+const Info = styled(motion.div)`
+    padding: 10px;
+    background-color: ${props => props.theme.black.lighter};
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    h4 {
+        text-align: center;
+        font-size: 18px;
+    }
+`;
+
+const infoVariants: Variants = {
+    hover: {
+        opacity: 1,
         transition: {
             type: "tween",
             delay: 0.3
@@ -140,6 +162,9 @@ function Home() {
                                         whileHover="hover"
                                         transition={{type: "tween"}}
                                     >
+                                        <Info variants={infoVariants}>
+                                            <h4>{movie.title}</h4>
+                                        </Info>
                                     </Box>)
                                 }
                             </Row>
