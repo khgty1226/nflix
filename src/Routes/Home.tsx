@@ -2,7 +2,7 @@ import {useQuery} from "@tanstack/react-query";
 import {getMovies, IGetMoviesResult} from "../api";
 import styled from "styled-components";
 import {makeImagePath} from "../utilities";
-import {AnimatePresence, motion} from "framer-motion";
+import {AnimatePresence, motion, Variants} from "framer-motion";
 import {useState} from "react";
 
 const Wrapper = styled.div`
@@ -34,7 +34,7 @@ const Title = styled.h2`
 `;
 
 const Overview = styled.p`
-  font-size: 30px;
+  font-size: 18px;
   width: 50%;
 `;
 
@@ -58,6 +58,12 @@ const Box = styled(motion.div)<{bgPhoto:string}>`
     background-position: center;
     height: 200px;
     color: red;
+    &:first-child {
+        transform-origin: center left;
+    }
+    &:last-child {
+        transform-origin: center right;
+    }
 `;
 
 const rowVariants = {
@@ -69,6 +75,20 @@ const rowVariants = {
     },
     exiting: {
         x: -window.innerWidth
+    }
+}
+
+const boxVariants: Variants = {
+    normal: {
+        scale: 1
+    },
+    hover: {
+        scale: 1.3,
+        y: -50,
+        transition: {
+            type: "tween",
+            delay: 0.3
+        }
     }
 }
 
@@ -112,7 +132,15 @@ function Home() {
                                  transition={{type: "tween", duration: 1}}
                             >
                                 {data?.results.slice(1).slice(offset*index, offset*index+offset).map(movie =>
-                                    <Box key={movie.id} bgPhoto={makeImagePath(movie.backdrop_path, "w500")}></Box>)
+                                    <Box
+                                        key={movie.id}
+                                        variants={boxVariants}
+                                        bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                                        initial="normal"
+                                        whileHover="hover"
+                                        transition={{type: "tween"}}
+                                    >
+                                    </Box>)
                                 }
                             </Row>
                         </AnimatePresence>
