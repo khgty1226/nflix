@@ -52,9 +52,9 @@ const Row = styled(motion.div)`
     width: 100%;
 `;
 
-const Box = styled(motion.div)<{bgPhoto:string}>`
+const Box = styled(motion.div)<{$bgPhoto:string}>`
     background-color: white;
-    background-image: url(${props => props.bgPhoto});
+    background-image: url(${props => props.$bgPhoto});
     background-size: cover;
     background-position: center;
     height: 200px;
@@ -132,6 +132,31 @@ const BigMovie = styled(motion.div)`
     left: 0;
     right: 0;
     margin: 0 auto;
+    background-color: ${props => props.theme.black.lighter};
+    border-radius: 15px;
+    overflow: hidden;
+`;
+
+const BigCover = styled.div`
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+    background-position: center center;
+`;
+
+const BigTitle = styled.h3`
+    color: ${props => props.theme.white.lighter};
+    font-size: 32px;
+    position: relative;
+    top: -80px;
+    padding: 20px;
+`;
+
+const BigOverView = styled.p`
+    position: relative;
+    padding: 20px;
+    top: -60px;
+    color: ${props => props.theme.white.lighter};
 `;
 
 const offset = 6;
@@ -162,13 +187,16 @@ function Home() {
     const onOverlayClick = () => {
         history.push("/");
     }
+    const clickedMovie =
+        bigMovieMatch?.params.movieId &&
+        data?.results.find((movie) => movie.id === +bigMovieMatch.params.movieId);
     return (
         <Wrapper>
             {isLoading ? (
                 <Loader>Loading...</Loader>
             ) : (
                 <>
-                        <Banner onClick={increaseIndex} bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
+                    <Banner onClick={increaseIndex} bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
                         <Title>{data?.results[0].title}</Title>
                         <Overview>{data?.results[0].overview}</Overview>
                     </Banner>
@@ -186,7 +214,7 @@ function Home() {
                                         key={movie.id}
                                         layoutId={movie.id+""}
                                         variants={boxVariants}
-                                        bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                                        $bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
                                         initial="normal"
                                         whileHover="hover"
                                         transition={{type: "tween"}}
@@ -208,6 +236,12 @@ function Home() {
                                     style={{top:scrollY.get() + 100}}
                                     layoutId={bigMovieMatch.params.movieId}
                                 >
+                                    {clickedMovie &&
+                                        <>
+                                           <BigCover style={{backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(clickedMovie.backdrop_path, "w500")})`}} />
+                                           <BigTitle>{clickedMovie.title}</BigTitle>
+                                           <BigOverView>{clickedMovie.overview}</BigOverView>
+                                    </>}
                                 </BigMovie>
                             </>
                         ): null}
