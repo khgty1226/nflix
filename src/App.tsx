@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
 import Board from "./Components/Board";
+import DeleteBox from "./Components/DeleteBox";
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,6 +22,11 @@ const Boards = styled.div`
     width: 100%;
     gap: 10px;
 `;
+
+export interface IDroppableAreaProps {
+    isDraggingFromThis: boolean;
+    isDraggingOver: boolean;
+}
 
 function App() {
     const [toDos, setToDos] = useRecoilState(toDoState);
@@ -42,18 +48,31 @@ function App() {
         }
         if (destination.droppableId !== source.droppableId) {
             // cross board movement
-            setToDos((allBoards) => {
-                const sourceBoard = [...allBoards[source.droppableId]];
-                const taskObj = sourceBoard[source.index];
-                const destinationBoard = [...allBoards[destination.droppableId]];
-                sourceBoard.splice(source.index, 1);
-                destinationBoard.splice(destination?.index, 0, taskObj);
-                return {
-                    ...allBoards,
-                    [source.droppableId]: sourceBoard,
-                    [destination.droppableId]: destinationBoard,
-                };
-            });
+            if(destination?.droppableId === "delete"){
+                // delete board
+                setToDos((allBoards) => {
+                    const boardCopy = [...allBoards[source.droppableId]];
+                    boardCopy.splice(source.index, 1);
+                    return {
+                        ...allBoards,
+                        [source.droppableId]: boardCopy
+                    }
+                })
+            }else{
+                // move board
+                setToDos((allBoards) => {
+                    const sourceBoard = [...allBoards[source.droppableId]];
+                    const taskObj = sourceBoard[source.index];
+                    const destinationBoard = [...allBoards[destination.droppableId]];
+                    sourceBoard.splice(source.index, 1);
+                    destinationBoard.splice(destination?.index, 0, taskObj);
+                    return {
+                        ...allBoards,
+                        [source.droppableId]: sourceBoard,
+                        [destination.droppableId]: destinationBoard,
+                    };
+                });
+            }
         }
     };
     return (
@@ -64,6 +83,7 @@ function App() {
                         <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
                     ))}
                 </Boards>
+                <DeleteBox/>
             </Wrapper>
         </DragDropContext>
     );

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { ITodo, toDoState } from "../atoms";
 import { useSetRecoilState } from "recoil";
 import DraggableCard from "./DraggableCard";
+import {IDroppableAreaProps} from "../App";
 
 const Wrapper = styled.div`
   width: 300px;
@@ -23,15 +24,10 @@ const Title = styled.h2`
   font-size: 14px;
 `;
 
-interface IAreaProps {
-    isDraggingFromThis: boolean;
-    isDraggingOver: boolean;
-}
-
-const Area = styled.div<IAreaProps>`
+const Area = styled.div<IDroppableAreaProps>`
   background-color: ${(props) =>
     props.isDraggingOver
-        ? "rgba(66,70,73, 0.5)"
+        ? "rgba(227, 227, 227, 0.2)"
         : props.isDraggingFromThis
             ? "rgba(66,70,73, 0.1)"
             : "transparent"};
