@@ -8,7 +8,6 @@ import {useHistory, useRouteMatch} from "react-router-dom";
 
 const Wrapper = styled.div`
     background: black;
-    overflow-x: hidden;
 `;
 
 const Loader = styled.div`
@@ -166,7 +165,6 @@ const offset = 6;
 function Home() {
     const history = useHistory()
     const bigMovieMatch = useRouteMatch<{movieId:string}>("/movies/:movieId");
-    const {scrollY} = useScroll();
     const { data, isLoading } = useQuery<IGetMoviesResult>(
         {queryKey:["movies","nowPlaying"],
             queryFn:getMovies}
