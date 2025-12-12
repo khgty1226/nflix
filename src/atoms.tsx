@@ -18,9 +18,9 @@ const {persistAtom} = recoilPersist({
 export const toDoState = atom<IToDoState>({
     key: "toDo",
     default: {
-        "To Do": [],
-        Doing: [],
-        Done: [],
+        "To Do": [{id:1, text:"프로젝트 정리"}, {id:2, text:"책 읽기"}, {id:3, text:"런닝"}],
+        Doing: [{id:4, text:"공부하기"}, {id:5, text:"집안일 하기"}],
+        Done: [{id:6, text:"React Study"}, {id:7, text:"TypeScript Study"}],
     },
-    effects_UNSTABLE: [persistAtom]
+    // effects_UNSTABLE: [persistAtom]
 });
