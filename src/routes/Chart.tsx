@@ -20,7 +20,7 @@ interface IHistorical {
 }
 
 function Chart ({coinId}: ChartProps){
-    const {isLoading, data} = useQuery<IHistorical[]>({queryKey: ["ohlcv", coinId], queryFn: () => fetchCoinHistory(coinId), refetchInterval: 1000})
+    const {isLoading, data} = useQuery<IHistorical[]>({queryKey: ["ohlcv", coinId], queryFn: () => fetchCoinHistory(coinId)})
     const isDark = useRecoilValue(isDarkAtom);
     return (
         <div>

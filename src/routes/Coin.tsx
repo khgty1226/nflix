@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-    height: 10vh;
+    height: 15vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,7 +22,8 @@ const Header = styled.header`
 
 const Title = styled.h1`
     color: ${props => props.theme.accentColor};
-    font-size: 48px;
+    font-size: 32px;
+    font-weight: 600;
 `;
 
 const Loader = styled.span`
@@ -33,9 +34,10 @@ const Loader = styled.span`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${props => props.theme.cardBgColor};
   padding: 10px 20px;
   border-radius: 10px;
+    box-shadow: rgba(10, 10, 10, 0.1) 0px 0.2rem 0.5rem;
 `;
 const OverviewItem = styled.div`
   display: flex;
@@ -65,7 +67,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+    background-color: ${props => props.theme.cardBgColor};
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
@@ -144,7 +146,7 @@ function Coin (){
     const priceMatch = useRouteMatch(`/:coinId/price`);
     const chartMatch = useRouteMatch(`/:coinId/chart`);
     const { isLoading: infoLoading, data: infoData} = useQuery<InfoData>({queryKey: ["info", coinId], queryFn: () => fetchCoinInfo(coinId)});
-    const { isLoading: tickersLoading, data: tickersData} = useQuery<PriceData>({queryKey: ["tickers", coinId], queryFn: () => fetchCoinTickers(coinId), refetchInterval: 5000});
+    const { isLoading: tickersLoading, data: tickersData} = useQuery<PriceData>({queryKey: ["tickers", coinId], queryFn: () => fetchCoinTickers(coinId)});
     const loading = infoLoading || tickersLoading;
     return <Container>
         <Helmet>

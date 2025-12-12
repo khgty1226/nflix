@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import {Link} from "react-router-dom";
-import {useEffect, useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import {fetchCoins} from "./api";
 import Helmet from "react-helmet"
-import {useSetRecoilState} from "recoil";
+import {useRecoilState} from "recoil";
 import {isDarkAtom} from "../atoms";
 
 const Container = styled.div`
@@ -14,7 +13,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-    height: 10vh;
+    height: 15vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,7 +27,7 @@ const Coin = styled.li`
     color: ${props => props.theme.textColor};
     margin-bottom: 10px;
     border-radius: 15px;
-    border: 1px solid white;
+    box-shadow: rgba(10, 10, 10, 0.1) 0px 0.2rem 0.5rem;
     a {
         display: flex;
         transition: color .2s ease-in;
@@ -44,7 +43,8 @@ const Coin = styled.li`
 
 const Title = styled.h1`
     color: ${props => props.theme.accentColor};
-    font-size: 48px;
+    font-size: 32px;
+    font-weight: 600;
 `;
 
 const Loader = styled.span`
@@ -56,6 +56,29 @@ const Img = styled.img`
     width: 25px;
     height: 25px;
     margin-right: 10px;
+`;
+
+const ThemeBtn = styled.div`
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 10px;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: ${props => props.theme.cardBgColor};
+    box-shadow: rgba(10, 10, 10, 0.1) 0px 0.2rem 0.5rem;
+    cursor: pointer;
+    svg {
+        width: 25px;
+        height: 25px;
+        fill: royalblue;
+        path {
+            stroke: royalblue;
+        }
+    }
 `;
 
 interface ICoin {
@@ -73,15 +96,14 @@ interface ICoinsProps {
 
 export function Coins (){
     const { isLoading, data } = useQuery<ICoin[]>({ queryKey: ['allCoins'], queryFn: fetchCoins })
-    const setDarkAtom = useSetRecoilState(isDarkAtom);
+    const [darkAtom, setDarkAtom] = useRecoilState(isDarkAtom);
     const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
     return <Container>
         <Helmet>
-            <title>코인</title>
+            <title>Crypto-Tracker</title>
         </Helmet>
         <Header>
-            <Title>코인</Title>
-            <button onClick={toggleDarkAtom}>Toggle Dark Mode</button>
+            <Title>Crypto-Tracker</Title>
         </Header>
         {isLoading ? <Loader>Loading...</Loader> :(
             <CoinList>
@@ -96,6 +118,19 @@ export function Coins (){
                 </Coin>)}
             </CoinList>
         )}
+        <ThemeBtn onClick={toggleDarkAtom}>{darkAtom ? (
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" className="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/>
+            </svg>
+
+        ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path
+                    d="M256 0C114.6 0 0 114.6 0 256S114.6 512 256 512c68.8 0 131.3-27.2 177.3-71.4 7.3-7 9.4-17.9 5.3-27.1s-13.7-14.9-23.8-14.1c-4.9 .4-9.8 .6-14.8 .6-101.6 0-184-82.4-184-184 0-72.1 41.5-134.6 102.1-164.8 9.1-4.5 14.3-14.3 13.1-24.4S322.6 8.5 312.7 6.3C294.4 2.2 275.4 0 256 0z"/>
+            </svg>
+        )}</ThemeBtn>
     </Container>;
 }
 
