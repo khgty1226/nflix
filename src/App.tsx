@@ -7,7 +7,7 @@ import DeleteBox from "./Components/DeleteBox";
 
 const Wrapper = styled.div`
   display: flex;
-  width: 100vw;
+  width: 900px;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -21,6 +21,12 @@ const Boards = styled.div`
     align-items: flex-start;
     width: 100%;
     gap: 10px;
+`;
+
+const Title = styled.div`
+    margin-bottom: 40px;
+    font-size: 24px;
+    font-weight: bold;
 `;
 
 export interface IDroppableAreaProps {
@@ -78,6 +84,9 @@ function App() {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Wrapper>
+                <Title>
+                    To Do App
+                </Title>
                 <Boards>
                     {Object.keys(toDos).map((boardId) => (
                         <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />

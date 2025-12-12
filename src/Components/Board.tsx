@@ -8,19 +8,20 @@ import {IDroppableAreaProps} from "../App";
 
 const Wrapper = styled.div`
   width: 300px;
-  padding-top: 10px;
+  padding-top: 15px;
   background-color: ${(props) => props.theme.boardColor};
   border-radius: 5px;
   min-height: 300px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 0.3rem 0.6rem;
 `;
 
 const Title = styled.h2`
   text-align: center;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-size: 14px;
 `;
 
@@ -52,7 +53,7 @@ const Form = styled.form`
     text-align: center;
     margin: 0 auto;
     &::placeholder {
-        color: white;
+        color: lightgray;
     }
   }
 `;
