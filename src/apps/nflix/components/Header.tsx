@@ -1,7 +1,7 @@
 import {Link, useHistory, useRouteMatch} from "react-router-dom";
 import styled from "styled-components";
 import {motion, useAnimation, useMotionValueEvent, useScroll} from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {useForm} from "react-hook-form";
 
 const Nav = styled(motion.nav)`
@@ -76,7 +76,7 @@ const Circle = styled(motion.span)`
 const Input = styled(motion.input)`
     transform-origin: right center;
     position: absolute;
-    right: 0px;
+    right: 0;
     padding: 5px 10px;
     padding-left: 40px;
     z-index: -1;
@@ -101,6 +101,7 @@ interface IForm {
 
 function Header() {
     const [searchOpen, setSearchOpen] = useState(false);
+    const {path} = useRouteMatch();
     const homeMatch = useRouteMatch("/");
     const tvMatch = useRouteMatch("/tv");
     const history = useHistory();
@@ -131,7 +132,7 @@ function Header() {
     return (
         <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
             <Col>
-                <Link to="/">
+                <Link to={`${path}/`}>
                     <Logo
                         xmlns="http://www.w3.org/2000/svg"
                         width="1024"
@@ -143,12 +144,12 @@ function Header() {
                 </Link>
                 <Items>
                     <Item>
-                        <Link to="/">
+                        <Link to={`${path}/`}>
                             Home {homeMatch?.isExact && <Circle layoutId="circle" />}
                         </Link>
                     </Item>
                     <Item>
-                        <Link to="/tv">
+                        <Link to={`${path}/tv`}>
                             Tv Shows {tvMatch && <Circle layoutId="circle" />}
                         </Link>
                     </Item>

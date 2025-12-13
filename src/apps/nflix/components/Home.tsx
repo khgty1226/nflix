@@ -1,8 +1,8 @@
 import {useQuery} from "@tanstack/react-query";
-import {getMovies, IGetMoviesResult} from "../api";
 import styled from "styled-components";
-import {makeImagePath} from "../utilities";
-import {AnimatePresence, motion, Variants, useScroll} from "framer-motion";
+import {getMovies, IGetMoviesResult} from "../../../api";
+import {makeImagePath} from "../../../utilities";
+import {AnimatePresence, motion, Variants} from "framer-motion";
 import {useState} from "react";
 import {useHistory, useRouteMatch} from "react-router-dom";
 
@@ -164,7 +164,9 @@ const offset = 6;
 
 function Home() {
     const history = useHistory()
-    const bigMovieMatch = useRouteMatch<{movieId:string}>("/movies/:movieId");
+    const routeMatch = useRouteMatch();
+    const contextPath = "/" + routeMatch.path.split("/")[1];
+    const bigMovieMatch = useRouteMatch<{movieId:string}>(`${contextPath}/movies/:movieId`);
     const { data, isLoading } = useQuery<IGetMoviesResult>(
         {queryKey:["movies","nowPlaying"],
             queryFn:getMovies}
@@ -182,10 +184,10 @@ function Home() {
     }
     const toggleLeaving = () => setLeaving((prev) => !prev);
     const onBoxClicked = (movieId:number) => {
-        history.push(`/movies/${movieId}`);
+        history.push(`${contextPath}/movies/${movieId}`);
     }
     const onOverlayClick = () => {
-        history.push("/");
+        history.push(`${contextPath}`);
     }
     const clickedMovie =
         bigMovieMatch?.params.movieId &&

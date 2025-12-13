@@ -1,22 +1,16 @@
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import Home from "./Routes/Home";
-import Search from "./Routes/Search";
-import Tv from "./Routes/Tv";
-import Header from "./Routes/Header";
+import Home from "./components/Home"
+import MovieRouter from "./apps/nflix/MovieRouter";
 
 function App() {
     return (
-        <Router>
-            <Header/>
+        <Router basename="/react-projects">
             <Switch>
-                <Route path="/tv">
-                    <Tv/>
-                </Route>
-                <Route path="/search">
-                    <Search/>
-                </Route>
-                <Route path={["/", "/movies/:movieId"]}>
+                <Route exact path="/">
                     <Home/>
+                </Route>
+                <Route path="/nflix">
+                    <MovieRouter/>
                 </Route>
             </Switch>
         </Router>
