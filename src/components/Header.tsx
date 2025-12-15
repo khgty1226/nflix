@@ -132,7 +132,7 @@ function Header() {
     return (
         <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
             <Col>
-                <Link to={`${path}/`}>
+                <Link to="/">
                     <Logo
                         xmlns="http://www.w3.org/2000/svg"
                         width="1024"
@@ -144,12 +144,12 @@ function Header() {
                 </Link>
                 <Items>
                     <Item>
-                        <Link to={`${path}/`}>
+                        <Link to="/">
                             Home {homeMatch?.isExact && <Circle layoutId="circle" />}
                         </Link>
                     </Item>
                     <Item>
-                        <Link to={`${path}/tv`}>
+                        <Link to="tv">
                             Tv Shows {tvMatch && <Circle layoutId="circle" />}
                         </Link>
                     </Item>
