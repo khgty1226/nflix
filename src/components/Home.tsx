@@ -3,8 +3,9 @@ import styled from "styled-components";
 import {getMovies, IGetMoviesResult} from "../api";
 import {makeImagePath} from "../utilities";
 import {AnimatePresence, motion, Variants} from "framer-motion";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useHistory, useRouteMatch} from "react-router-dom";
+import MovieDetail from "./MovieDetail";
 
 const Wrapper = styled.div`
     background: black;
@@ -125,41 +126,6 @@ const Overlay = styled(motion.div)`
     overflow-y: scroll;
 `;
 
-const BigMovie = styled(motion.div)`
-    position: absolute;
-    width: 60vw;
-    top: 20px;
-    left: 0;
-    right: 0;
-    height: 1000px;
-    margin: 0 auto;
-    background-color: ${props => props.theme.black.lighter};
-    border-radius: 15px;
-    overflow: hidden;
-`;
-
-const BigCover = styled.div`
-    width: 100%;
-    height: 400px;
-    background-size: cover;
-    background-position: center center;
-`;
-
-const BigTitle = styled.h3`
-    color: ${props => props.theme.white.lighter};
-    font-size: 32px;
-    position: relative;
-    top: -80px;
-    padding: 20px;
-`;
-
-const BigOverView = styled.p`
-    position: relative;
-    padding: 20px;
-    top: -60px;
-    color: ${props => props.theme.white.lighter};
-`;
-
 const offset = 6;
 
 function Home() {
@@ -187,7 +153,7 @@ function Home() {
     const onOverlayClick = () => {
         history.push("/");
     }
-    const clickedMovie =
+    const clickedMovieData =
         bigMovieMatch?.params.movieId &&
         data?.results.find((movie) => movie.id === +bigMovieMatch.params.movieId);
     return (
@@ -232,15 +198,10 @@ function Home() {
                         {bigMovieMatch ? (
                             <>
                                 <Overlay onClick={onOverlayClick} animate={{opacity:1}} exit={{opacity:0}}>
-                                    <BigMovie
-                                        layoutId={bigMovieMatch.params.movieId}>
-                                        {clickedMovie &&
-                                            <>
-                                                <BigCover style={{backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(clickedMovie.backdrop_path, "w500")})`}} />
-                                                <BigTitle>{clickedMovie.title}</BigTitle>
-                                                <BigOverView>{clickedMovie.overview}</BigOverView>
-                                            </>}
-                                    </BigMovie>
+                                    { clickedMovieData &&
+                                        <MovieDetail
+                                        layoutId={bigMovieMatch.params.movieId}
+                                        clickedMovieData={clickedMovieData} />}
                                 </Overlay>
                             </>
                         ): null}
