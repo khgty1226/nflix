@@ -9,7 +9,7 @@ import {useQuery} from "@tanstack/react-query";
 const Wrapper = styled(motion.div)`
     position: absolute;
     width: 60vw;
-    top: 20px;
+    top: 50px;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -21,7 +21,7 @@ const Wrapper = styled(motion.div)`
 const Head = styled.div<{backdropPath:string}>`
     position: relative;
     width: 100%;
-    height: 350px;
+    height: 450px;
     background-image: linear-gradient(to top, black, transparent), url(${props => makeImagePath(props.backdropPath, "w500")});
     background-size: cover;
     background-position: center center;
@@ -33,6 +33,7 @@ const Body = styled.div`
     gap: 20px;
     width: 100%;
     padding: 20px;
+    background: #181818 linear-gradient(to bottom, black, transparent);
 `;
 
 const BodyLeft = styled.div`
