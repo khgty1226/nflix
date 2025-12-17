@@ -101,7 +101,6 @@ interface IForm {
 
 function Header() {
     const [searchOpen, setSearchOpen] = useState(false);
-    const {path} = useRouteMatch();
     const homeMatch = useRouteMatch("/");
     const tvMatch = useRouteMatch("/tv");
     const history = useHistory();

@@ -1,7 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import styled from "styled-components";
-import {getMovies, IGetMoviesResult} from "../api";
-import {makeImagePath} from "../utilities";
+import {getMovies, IGetMoviesResult} from "../../api";
+import {makeImagePath} from "../../utilities";
 import {AnimatePresence, motion, Variants} from "framer-motion";
 import React, {useState} from "react";
 import {useHistory, useRouteMatch} from "react-router-dom";
@@ -39,9 +39,47 @@ const Overview = styled.p`
     width: 50%;
 `;
 
+const LeftArrow = styled.div`
+    display: none;
+    position: absolute;
+    left: 0;
+    width: 50px;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    font-size: 36px;
+    cursor: pointer;
+    border-radius: 5px;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+`;
+
+const RightArrow = styled.div`
+    display: none;
+    position: absolute;
+    width: 50px;
+    height: 200px;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    font-size: 36px;
+    cursor: pointer;
+    border-radius: 5px;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+`;
+
 const Slider = styled.div`
     position: relative;
     top: -100px;
+    &:hover ${LeftArrow},
+    &:hover ${RightArrow} {
+        display: flex;
+    }
 `;
 
 const Row = styled(motion.div)`
@@ -67,16 +105,16 @@ const Box = styled(motion.div)<{$bgPhoto:string}>`
     }
 `;
 
-const rowVariants = {
-    hidden: {
-        x: window.innerWidth
-    },
+const rowVariants: Variants = {
+    hidden: (back:number) => ({
+        x: back ? -window.innerWidth : window.innerWidth,
+    }),
     visible: {
         x: 0
     },
-    exiting: {
-        x: -window.innerWidth
-    }
+    exiting: (back: number) => ({
+        x: back ? window.innerWidth : -window.innerWidth,
+    }),
 }
 
 const boxVariants: Variants = {
@@ -136,6 +174,7 @@ function Home() {
             queryFn:getMovies}
     );
     const [index, setIndex] = useState(0);
+    const [back, setBack] = useState(false);
     const [leaving, setLeaving] = useState(false);
     const increaseIndex = () => {
         if(data){
@@ -143,7 +182,18 @@ function Home() {
             toggleLeaving();
             const totalMovies = data.results.length -1;
             const maxIndex = Math.floor(totalMovies / offset) - 1;
+            setBack(false);
             setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+        }
+    }
+    const decreaseIndex = () => {
+        if(data){
+            if(leaving) return;
+            toggleLeaving();
+            const totalMovies = data.results.length -1;
+            const maxIndex = Math.floor(totalMovies / offset) - 1;
+            setBack(true);
+            setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
         }
     }
     const toggleLeaving = () => setLeaving((prev) => !prev);
@@ -162,18 +212,20 @@ function Home() {
                 <Loader>Loading...</Loader>
             ) : (
                 <>
-                    <Banner onClick={increaseIndex} bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
+                    <Banner bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
                         <Title>{data?.results[0].title}</Title>
                         <Overview>{data?.results[0].overview}</Overview>
                     </Banner>
                     <Slider>
-                        <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                        <LeftArrow onClick={decreaseIndex}>&lt;</LeftArrow>
+                        <AnimatePresence initial={false} onExitComplete={toggleLeaving} custom={back}>
                             <Row key={index}
                                  variants={rowVariants}
                                  initial="hidden"
                                  animate="visible"
                                  exit="exiting"
                                  transition={{type: "tween", duration: 1}}
+                                 custom={back}
                             >
                                 {data?.results.slice(1).slice(offset*index, offset*index+offset).map(movie =>
                                     <Box
@@ -193,6 +245,7 @@ function Home() {
                                 }
                             </Row>
                         </AnimatePresence>
+                        <RightArrow onClick={increaseIndex}>&gt;</RightArrow>
                     </Slider>
                     <AnimatePresence>
                         {bigMovieMatch ? (

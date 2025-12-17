@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {motion} from "framer-motion";
-import {makeImagePath} from "../utilities";
-import {getMovieDetail, IGetMovieDetail, IMovie} from "../api";
+import {makeImagePath} from "../../utilities";
+import {getMovieDetail, IGetMovieDetail, IMovie} from "../../api";
 import React from "react";
 import {useHistory} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
@@ -125,7 +125,7 @@ function MovieDetail({layoutId, clickedMovieData}:IMovieDetailProps){
     const onWrapperClick = (event:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         event.stopPropagation();
     }
-    const { data:movieDetailData, isLoading} = useQuery<IGetMovieDetail>({queryKey:["movies", "detail"], queryFn: () => getMovieDetail(clickedMovieData.id+"")})
+    const { data:movieDetailData } = useQuery<IGetMovieDetail>({queryKey:["movies", "detail"], queryFn: () => getMovieDetail(clickedMovieData.id+"")})
     return (
         <Wrapper layoutId={layoutId} onClick={onWrapperClick}>
             <Close onClick={()=> history.push("/")}>
