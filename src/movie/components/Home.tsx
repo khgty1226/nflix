@@ -133,14 +133,14 @@ const boxVariants: Variants = {
 
 const Info = styled(motion.div)`
     padding: 10px;
-    background-color: ${props => props.theme.black.lighter};
+    background: ${props => props.theme.black.darker} linear-gradient(to bottom, black, transparent);
     opacity: 0;
     position: absolute;
     width: 100%;
     bottom: 0;
     h4 {
         text-align: center;
-        font-size: 18px;
+        font-size: 14px;
     }
 `;
 

@@ -33,7 +33,7 @@ const Body = styled.div`
     gap: 20px;
     width: 100%;
     padding: 20px;
-    background: #181818 linear-gradient(to bottom, black, transparent);
+    background: ${props => props.theme.black.darker} linear-gradient(to bottom, black, transparent);
 `;
 
 const BodyLeft = styled.div`
